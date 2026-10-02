@@ -52,6 +52,7 @@ from .file_reachability import (
     is_file_reachable,
 )
 from .models import DeadCodeFindingData, DeadCodeKind, DeadCodeReport
+from .module_strings import drop_named_modules
 from .name_occurrences import (
     IDENTIFIER_RE,
     clamp_path_mentions,
@@ -904,6 +905,7 @@ class DeadCodeAnalyzer:
         findings = clamp_unverified_absence(findings, self._source_map)
         findings = drop_internals_used_in_own_file(findings, self._source_map)
         findings = clamp_path_mentions(findings, self._source_map)
+        findings = drop_named_modules(findings, self._source_map, self._dynamic_import_files)
         findings = clamp_entry_shaped(
             findings, self._source_map, self._public_top_level_names(findings)
         )
